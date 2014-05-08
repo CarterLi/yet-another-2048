@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>2048</title>
+        <style type="text/css">
+            main {
+                width: 500px;
+                height: 500px;
+                padding: 10px;
+                border-radius: 6px;
+                background: #BBADA0;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                cursor: default;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -ms-touch-action: none;
+                display: flex;
+                flex-direction: column;
+            }
+
+            main > div {
+                display: flex;
+                flex: 1;
+            }
+
+            main > div > div {
+                display: flex;
+                flex: 1;
+                border-radius: 3px;
+                margin: 10px;
+                background-color: rgba(238, 228, 218, 0.35);
+                box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0), 0 0 0 1px rgba(255, 255, 255, 0) inset;
+            }
+
+            main > div > div[data-number]::before {
+                content: attr(data-number);
+                flex: 1;
+                display: block; /* IE */
+                text-align: center;
+                line-height: 100px;
+                border-radius: 3px;
+                font-size: 55px;
+                font-family: "Segoe UI";
+                font-weight: bold;
+                color: #776E65;
+            }
+
+            main > div > div[data-number="2"]::before {
+                background: #eee4da;
+                box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0), inset 0 0 0 1px rgba(255, 255, 255, 0);
+            }
+
+            main > div > div[data-number="4"]::before {
+                background: #ede0c8;
+                box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0), inset 0 0 0 1px rgba(255, 255, 255, 0);
+            }
+
+            main > div > div[data-number="8"]::before {
+                color: #f9f6f2;
+                background: #f2b179;
+            }
+
+            main > div > div[data-number="16"]::before {
+                color: #f9f6f2;
+                background: #f59563;
+            }
+
+            main > div > div[data-number="32"]::before {
+                color: #f9f6f2;
+                background: #f67c5f;
+            }
+
+            main > div > div[data-number="64"]::before {
+                color: #f9f6f2;
+                background: #f65e3b;
+            }
+
+            main > div > div[data-number="128"]::before {
+                color: #f9f6f2;
+                background: #edcf72;
+                box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.2381), inset 0 0 0 1px rgba(255, 255, 255, 0.14286);
+                font-size: 45px;
+            }
+
+            main > div > div[data-number="256"]::before {
+                color: #f9f6f2;
+                background: #edcc61;
+                box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.31746), inset 0 0 0 1px rgba(255, 255, 255, 0.19048);
+                font-size: 45px;
+            }
+
+            main > div > div[data-number="512"]::before {
+                color: #f9f6f2;
+                background: #edc850;
+                box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381);
+                font-size: 45px;
+            }
+
+            main > div > div[data-number="1024"]::before {
+                color: #f9f6f2;
+                background: #edc53f;
+                box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571);
+                font-size: 35px;
+            }
+
+            main > div > div[data-number="2048"]::before {
+                color: #f9f6f2;
+                background: #edc22e;
+                box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.55556), inset 0 0 0 1px rgba(255, 255, 255, 0.33333);
+                font-size: 35px;
+            }
+
+            main > div > div[data-number="4096"]::before {
+                color: #f9f6f2;
+                background: #edbf1d;
+                box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.63493), inset 0 0 0 1px rgba(255, 255, 255, 0.38095);
+                font-size: 35px;
+            }
+
+            main > div > div[data-number="8192"]::before {
+                color: #f9f6f2;
+                background: #3c3a32;
+                font-size: 35px;
+            }
+
+            main > div > div[data-move]::before {
+                transition: all 150ms;
+            }
+
+            main > div > div[data-move="L1"]::before {
+                -webkit-transform: translate(calc((100% + 10px * 2) * (-1)), 0);
+                transform: translate(calc((100% + 10px * 2) * (-1)), 0);
+            }
+
+            main > div > div[data-move="L2"]::before {
+                -webkit-transform: translate(calc((100% + 10px * 2) * (-2)), 0);
+                transform: translate(calc((100% + 10px * 2) * (-2)), 0);
+            }
+
+            main > div > div[data-move="L3"]::before {
+                -webkit-transform: translate(calc((100% + 10px * 2) * (-3)), 0);
+                transform: translate(calc((100% + 10px * 2) * (-3)), 0);
+            }
+
+            main > div > div[data-move="U1"]::before {
+                -webkit-transform: translate(0, calc((100% + 10px * 2) * (-1)));
+                transform: translate(0, calc((100% + 10px * 2) * (-1)));
+            }
+
+            main > div > div[data-move="U2"]::before {
+                -webkit-transform: translate(0, calc((100% + 10px * 2) * (-2)));
+                transform: translate(0, calc((100% + 10px * 2) * (-2)));
+            }
+
+            main > div > div[data-move="U3"]::before {
+                -webkit-transform: translate(0, calc((100% + 10px * 2) * (-3)));
+                transform: translate(0, calc((100% + 10px * 2) * (-3)));
+            }
+
+            main > div > div[data-move="R1"]::before {
+                -webkit-transform: translate(calc(100% + 10px * 2), 0);
+                transform: translate(calc(100% + 10px * 2), 0);
+            }
+
+            main > div > div[data-move="R2"]::before {
+                -webkit-transform: translate(calc((100% + 10px * 2) * 2), 0);
+                transform: translate(calc((100% + 10px * 2) * 2), 0);
+            }
+
+            main > div > div[data-move="R3"]::before {
+                -webkit-transform: translate(calc((100% + 10px * 2) * 3), 0);
+                transform: translate(calc((100% + 10px * 2) * 3), 0);
+            }
+
+            main > div > div[data-move="D1"]::before {
+                -webkit-transform: translate(0, calc(100% + 10px * 2));
+                transform: translate(0, calc(100% + 10px * 2));
+            }
+
+            main > div > div[data-move="D2"]::before {
+                -webkit-transform: translate(0, calc((100% + 10px * 2) * 2));
+                transform: translate(0, calc((100% + 10px * 2) * 2));
+            }
+
+            main > div > div[data-move="D3"]::before {
+                -webkit-transform: translate(0, calc((100% + 10px * 2) * 3));
+                transform: translate(0, calc((100% + 10px * 2) * 3));
+            }
+        </style>
+    </head>
+<body>
+    <main>
+        <div>
+            <div data-pos="0-0" data-number="32"></div>
+            <div data-pos="1-0" data-number="16"></div>
+            <div data-pos="2-0" data-number="8"></div>
+            <div data-pos="3-0" data-number="2"></div>
+        </div>
+        <div>
+            <div data-pos="0-1" data-number="2"></div>
+            <div data-pos="1-1" data-number="4"></div>
+            <div data-pos="2-1" data-number="2"></div>
+            <div data-pos="3-1" data-number="2"></div>
+        </div>
+        <div>
+            <div data-pos="0-2" data-number="2"></div>
+            <div data-pos="1-2" data-number="4"></div>
+            <div data-pos="2-2" data-number="2"></div>
+            <div data-pos="3-2" data-number="2"></div>
+        </div>
+        <div>
+            <div data-pos="0-3"></div>
+            <div data-pos="1-3" data-number="2"></div>
+            <div data-pos="2-3"></div>
+            <div data-pos="3-3" data-number="2"></div>
+        </div>
+    </main>
+    <script type="text/javascript">
+        var timer;
+
+        function applyMove() {
+            timer = undefined;
+            var boxes = document.querySelectorAll("div[data-pos]");
+            for (var i = 0; i < boxes.length; ++i) {
+                var box = boxes[i];
+                if ('pending' in box.dataset) {
+                    if (box.dataset.pending) {
+                        box.dataset.number = box.dataset.pending;
+                    } else {
+                        delete box.dataset.number;
+                    }
+                    delete box.dataset.pending;
+                }
+                delete box.dataset.move;
+            }
+        }
+
+        document.addEventListener("keydown", function (key) {
+            if (timer !== undefined)
+                return;
+
+            switch (key.keyCode) {
+            case 37: // Left
+                for (var rowN = 0; rowN < 4; ++rowN) {
+                    var boundaryN = 0, moveTo;
+                    var row = document.querySelectorAll("div[data-pos$='" + rowN + "']");
+                    for (var columnN = 0; columnN < 4; ++columnN) {
+                        var box = row[columnN];
+                        if ('number' in box.dataset) {
+                            var boundaryBox = document.querySelector("div[data-pos='" + boundaryN + "-" + rowN + "']");
+                            if ('pending' in boundaryBox.dataset && boundaryBox.dataset.pending) {
+                                if (boundaryBox.dataset.pending == box.dataset.number) {
+                                    // 合并
+                                    box.dataset.pending = "";
+                                    boundaryBox.dataset.pending = parseInt(box.dataset.number) * 2;
+                                    moveTo = boundaryN++;
+                                } else {
+                                    // 数字不同
+                                    moveTo = ++boundaryN;
+                                    box.dataset.pending = "";
+                                    document.querySelector("div[data-pos='" + boundaryN + "-" + rowN + "']").dataset.pending = box.dataset.number;
+                                }
+                            } else {
+                                // 没数字
+                                box.dataset.pending = "";
+                                boundaryBox.dataset.pending = box.dataset.number;
+                                moveTo = boundaryN;
+                            }
+                            if (moveTo !== columnN) {
+                                box.dataset.move = "L" + (columnN - moveTo);
+                            }
+                        }
+                    }
+                }
+                break;
+
+                case 38: // Up
+                    for (var columnN = 0; columnN < 4; ++columnN) {
+                        var boundaryN = 0, moveTo;
+                        var column = document.querySelectorAll("div[data-pos^='" + columnN + "']");
+                        for (var rowN = 0; rowN < 4; ++rowN) {
+                            var box = column[rowN];
+                            if ('number' in column[rowN].dataset) {
+                                var boundaryBox = document.querySelector("div[data-pos='" + columnN + "-" + boundaryN + "']");
+                                if ('pending' in boundaryBox.dataset && boundaryBox.dataset.pending) {
+                                    if (boundaryBox.dataset.pending == box.dataset.number) {
+                                        // 合并
+                                        box.dataset.pending = "";
+                                        boundaryBox.dataset.pending = parseInt(box.dataset.number) * 2;
+                                        moveTo = boundaryN++;
+                                    } else {
+                                        // 数字不同
+                                        moveTo = ++boundaryN;
+                                        box.dataset.pending = "";
+                                        document.querySelector("div[data-pos='" + columnN + "-" + boundaryN + "']").dataset.pending = box.dataset.number;
+                                    }
+                                } else {
+                                    // 没数字
+                                    box.dataset.pending = "";
+                                    boundaryBox.dataset.pending = box.dataset.number;
+                                    moveTo = boundaryN;
+                                }
+                                if (moveTo !== rowN) {
+                                    box.dataset.move = "U" + (rowN - moveTo);
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+            case 39: // Right
+                for (var rowN = 0; rowN < 4; ++rowN) {
+                    var boundaryN = 3, moveTo;
+                    var row = document.querySelectorAll("div[data-pos$='" + rowN + "']");
+                    for (var columnN = 3; columnN >= 0; --columnN) {
+                        var box = row[columnN];
+                        if ('number' in box.dataset) {
+                            var boundaryBox = document.querySelector("div[data-pos='" + boundaryN + "-" + rowN + "']");
+                            if ('pending' in boundaryBox.dataset && boundaryBox.dataset.pending) {
+                                if (boundaryBox.dataset.pending == box.dataset.number) {
+                                    // 合并
+                                    box.dataset.pending = "";
+                                    boundaryBox.dataset.pending = parseInt(box.dataset.number) * 2;
+                                    moveTo = boundaryN--;
+                                } else {
+                                    // 数字不同
+                                    moveTo = --boundaryN;
+                                    box.dataset.pending = "";
+                                    document.querySelector("div[data-pos='" + boundaryN + "-" + rowN + "']").dataset.pending = box.dataset.number;
+                                }
+                            } else {
+                                // 没数字
+                                moveTo = boundaryN;
+                                row[columnN].dataset.pending = "";
+                                boundaryBox.dataset.pending = row[columnN].dataset.number;
+                            }
+                            if (moveTo !== columnN) {
+                                row[columnN].dataset.move = "R" + (moveTo - columnN);
+                            }
+                        }
+                    }
+                }
+                break;
+
+                case 40: // Down
+                    for (var columnN = 0; columnN < 4; ++columnN) {
+                        var boundaryN = 3;
+                        var column = document.querySelectorAll("div[data-pos^='" + columnN + "']");
+                        for (var rowN = 3; rowN >= 0; --rowN) {
+                            var box = column[rowN], moveTo;
+                            if ('number' in column[rowN].dataset) {
+                                var boundaryBox = document.querySelector("div[data-pos='" + columnN + "-" + boundaryN + "']");
+                                if ('pending' in boundaryBox.dataset && boundaryBox.dataset.pending) {
+                                    if (boundaryBox.dataset.pending == box.dataset.number) {
+                                        // 合并
+                                        box.dataset.pending = "";
+                                        boundaryBox.dataset.pending = parseInt(box.dataset.number) * 2;
+                                        moveTo = boundaryN--;
+                                    } else {
+                                        // 数字不同
+                                        moveTo = --boundaryN;
+                                        box.dataset.pending = "";
+                                        document.querySelector("div[data-pos='" + columnN + "-" + boundaryN + "']").dataset.pending = box.dataset.number;
+                                    }
+                                } else {
+                                    // 没数字
+                                    box.dataset.pending = "";
+                                    boundaryBox.dataset.pending = box.dataset.number;
+                                    moveTo = boundaryN;
+                                }
+                                if (moveTo !== rowN) {
+                                    box.dataset.move = "D" + (moveTo - rowN);
+                                }
+                            }
+                        }
+                    }
+                break;
+            }
+
+            timer = window.setTimeout(applyMove, 150);
+        });
+    </script>
+</body>
+</html>
