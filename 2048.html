@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-    <head><script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+    <head>
         <meta charset="utf-8"/>
         <title>2048</title>
         <style type="text/css">
@@ -20,7 +20,6 @@
                 -webkit-user-select: none;
                 -moz-user-select: none;
                 -ms-user-select: none;
-                -ms-touch-action: none;
                 display: flex;
                 flex-direction: column;
             }
@@ -399,16 +398,5 @@
             timer = window.setTimeout(applyMove.bind(null, key.keyCode), 150);
         });
     </script>
-<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
-NREUMQ.push(["load",new Date().getTime()]);
-var e=document.createElement("script");
-e.type="text/javascript";
-e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" +
-  "js-agent.newrelic.com/nr-100.js";
-document.body.appendChild(e);
-if(NREUMQ.a)NREUMQ.a();
-};
-NREUMQ.a=window.onload;window.onload=NREUMQ.f;
-};
-NREUMQ.push(["nrfj","beacon-4.newrelic.com","9de2ccfd40","2607179","JwpcRxNbCl8GRBpDVhwRbV4ERxVSBFNGGFIQEVNQCVkDXRdFGkRbCxI=",0,994,new Date().getTime(),"","","","",""]);</script></body>
+</body>
 </html>
